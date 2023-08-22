@@ -1,10 +1,13 @@
 /* ----------- Public API Route ---------- */
 
 const express = require("express");
-const route = express.Router();
+const router = express.Router();
 
-route.get("/public", (req, res) => {
-  res.send("This is public route!");
+// ! ------------------ PRODUCTS API -----------------
+router.get("/products", async (req, res) => {
+  const productCollection = req.productCollection;
+  const products = await productCollection.find().toArray();
+  res.send(products.reverse());
 });
 
-module.exports = route;
+module.exports = router;

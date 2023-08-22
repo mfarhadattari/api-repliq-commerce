@@ -32,7 +32,7 @@ const client = new MongoClient(process.env.MONGODB_URI, {
     client.connect();
 
     // database
-    const db = client.db("reqliq-commerce");
+    const db = client.db("repliq-commerce");
     
     // collections middleware
     app.use((req, res, next) => {
