@@ -10,4 +10,15 @@ router.get("/products", async (req, res) => {
   res.send(products.reverse());
 });
 
+// ! ---------------- POPULAR PRODUCTS --------------------
+router.get("/popular-products", async (req, res) => {
+  const productCollection = req.productCollection;
+  const popularProducts = await productCollection
+    .find({})
+    .sort({ timeDate: -1 })
+    .limit(6)
+    .toArray();
+  res.send(popularProducts);
+});
+
 module.exports = router;
