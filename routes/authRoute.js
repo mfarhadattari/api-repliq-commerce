@@ -4,6 +4,8 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { ObjectId } = require("mongodb");
+const { authVerifyToken } = require("../middleware/middleware");
 
 // ! -------------------- CREATE ACCOUNT --------------
 router.post("/create-account", async (req, res) => {
@@ -51,8 +53,24 @@ router.post("/login", async (req, res) => {
     userPhone: user.userPhone,
     avatar: user.avatar,
   };
-  
+
   res.send({ token, user: userInfo });
+});
+
+// ! -------------------- GET USER ---------------
+router.get("/user", authVerifyToken, async (req, res) => {
+  const userCollection = req.userCollection;
+  const user = await userCollection.findOne({ _id: new ObjectId(req.userId) });
+  if (!user) {
+    return res.send({ error: true, message: "User not found" });
+  }
+  const userInfo = {
+    _id: user._id,
+    userName: user.userName,
+    userPhone: user.userPhone,
+    avatar: user.avatar,
+  };
+  res.send({ user: userInfo });
 });
 
 module.exports = router;
