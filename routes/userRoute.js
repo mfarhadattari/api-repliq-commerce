@@ -3,6 +3,16 @@
 const express = require("express");
 const router = express.Router();
 
+// ! ------------------ MY CART ---------------
+router.get("/my-cart", async (req, res) => {
+  const cartCollection = req.cartCollection;
+  const query = {
+    userPhone: `+${req.query?.userPhone?.split(" ")?.join("")}`,
+  };
+  const cart = await cartCollection.find(query).toArray();
+  res.send(cart);
+});
+
 // ! ------------------ ADD TO CART ---------------
 router.post("/add-to-cart", async (req, res) => {
   const cartCollection = req.cartCollection;
