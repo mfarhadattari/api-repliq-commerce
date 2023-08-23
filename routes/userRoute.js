@@ -2,6 +2,7 @@
 
 const express = require("express");
 const router = express.Router();
+const {ObjectId} = require('mongodb')
 
 // ! ------------------ MY CART ---------------
 router.get("/my-cart", async (req, res) => {
@@ -30,6 +31,14 @@ router.post("/add-to-cart", async (req, res) => {
   }
   const result = await cartCollection.insertOne(data);
   return res.send(result);
+});
+
+// ! ------------------ DELETE CART ITEM ---------------
+router.delete("/delete-cart/:id", async (req, res) => {
+  const cartCollection = req.cartCollection;
+  const id = req.params.id;
+  const result = await cartCollection.deleteOne({ _id: new ObjectId(id) });
+  res.send(result);
 });
 
 module.exports = router;
