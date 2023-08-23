@@ -26,9 +26,7 @@ router.get("/popular-products", async (req, res) => {
 router.get("/products/:id", async (req, res) => {
   const productCollection = req.productCollection;
   const id = req.params.id;
-  console.log(id);
   const product = await productCollection.findOne({ _id: new ObjectId(id) });
-  console.log(product);
   res.send(product);
 });
 
