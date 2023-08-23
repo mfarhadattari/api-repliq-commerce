@@ -60,4 +60,14 @@ router.post("/checkout", async (req, res) => {
   res.send(cancelRequest);
 });
 
+// !------------------ MY ORDERS --------------
+router.get("/my-orders", async (req, res) => {
+  const orderCollection = req.orderCollection;
+  const query = {
+    userPhone: `+${req.query?.userPhone?.split(" ")?.join("")}`,
+  };
+  const orders = await orderCollection.find(query).toArray();
+  res.send(orders.reverse());
+});
+
 module.exports = router;
