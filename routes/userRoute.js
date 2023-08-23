@@ -41,4 +41,23 @@ router.delete("/delete-cart/:id", async (req, res) => {
   res.send(result);
 });
 
+// !------------------ CHECKOUT -----------------------
+router.post("/checkout", async (req, res) => {
+  const orderCollection = req.orderCollection;
+  const cartCollection = req.cartCollection;
+  const data = req.body;
+  const cartsID = data.products.map((product) => new ObjectId(product.cartID));
+  const insertResult = await orderCollection.insertOne(data);
+  if (insertResult.insertedId) {
+    const deleteResult = await cartCollection.deleteMany({
+      _id: { $in: cartsID },
+    });
+    return res.send(deleteResult);
+  }
+  const cancelRequest = await orderCollection.deleteOne({
+    _id: insertResult.insertedId,
+  });
+  res.send(cancelRequest);
+});
+
 module.exports = router;
