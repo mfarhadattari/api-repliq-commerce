@@ -77,4 +77,18 @@ router.get("/customers/:id", async (req, res) => {
   });
 });
 
+// ! ------------------ ADD A CUSTOMER ---------------
+router.post("/add-customer", async (req, res) => {
+  const customerCollection = req.customerCollection;
+  const data = req.body;
+  const alreadyExist = await customerCollection.findOne({
+    phoneNumber: data.phoneNumber,
+  });
+  if (alreadyExist) {
+    return res.send({ alreadyExist: true });
+  }
+  const result = await customerCollection.insertOne(data);
+  res.send(result);
+});
+
 module.exports = router;
