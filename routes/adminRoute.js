@@ -107,4 +107,17 @@ router.get("/orders/:id", async (req, res) => {
   res.send(order);
 });
 
+// ! ----------- UPDATE STATUS OF ORDER ---------------
+router.patch("/update-status/:id", async (req, res) => {
+  const orderCollection = req.orderCollection;
+  const query = { _id: new ObjectId(req.params.id) };
+  const updateDoc = {
+    $set: {
+      status: req.body.status,
+    },
+  };
+  const result = await orderCollection.updateOne(query, updateDoc);
+  res.send(result);
+});
+
 module.exports = router;
