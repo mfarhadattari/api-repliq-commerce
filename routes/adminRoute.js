@@ -11,6 +11,14 @@ router.get("/products", async (req, res) => {
   res.send(products.reverse());
 });
 
+// ! ------------------ ADD A PRODUCT ---------------
+router.post("/add-product", async (req, res) => {
+  const productCollection = req.productCollection;
+  const data = req.body;
+  const result = await productCollection.insertOne(data);
+  res.send(result);
+});
+
 // ! ------------------ DELETE PRODUCT ---------------
 router.delete("/delete-product/:id", async (req, res) => {
   const productCollection = req.productCollection;
