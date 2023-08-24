@@ -107,7 +107,7 @@ router.get("/orders/:id", async (req, res) => {
   res.send(order);
 });
 
-// ! ----------- UPDATE STATUS OF ORDER ---------------
+// ! ----------- UPDATE ORDER STATUS  ---------------
 router.patch("/update-status/:id", async (req, res) => {
   const orderCollection = req.orderCollection;
   const query = { _id: new ObjectId(req.params.id) };
