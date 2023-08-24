@@ -74,14 +74,14 @@ router.get("/customers/:id", async (req, res) => {
   });
   const ordersInfo = await orderCollection
     .find(
-      { userPhone: customerInfo?.phoneNumber },
-      { projection: { _id: 1, totalAmount: 1, status: 1 } }
+      { userPhone: customerInfo?.userPhone },
+      { projection: { _id: 1, amount: 1, status: 1 } }
     )
     .toArray();
 
   const cart = await cartCollection
     .find({
-      phoneNumber: customerInfo?.phoneNumber,
+      userPhone: customerInfo?.userPhone,
     })
     .toArray();
 
@@ -97,7 +97,7 @@ router.post("/add-customer", async (req, res) => {
   const customerCollection = req.customerCollection;
   const data = req.body;
   const alreadyExist = await customerCollection.findOne({
-    phoneNumber: data.phoneNumber,
+    userPhone: data.userPhone,
   });
   if (alreadyExist) {
     return res.send({ alreadyExist: true });
