@@ -91,4 +91,11 @@ router.post("/add-customer", async (req, res) => {
   res.send(result);
 });
 
+// ! ---------------- GET ALL ORDERS ------- //
+router.get("/orders", async (req, res) => {
+  const orderCollection = req.orderCollection;
+  const customers = await orderCollection.find().toArray();
+  res.send(customers.reverse());
+});
+
 module.exports = router;
