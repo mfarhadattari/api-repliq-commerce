@@ -98,4 +98,13 @@ router.get("/orders", async (req, res) => {
   res.send(customers.reverse());
 });
 
+
+// ! ---------------- ORDER DETAILS ---------
+router.get("/orders/:id", async (req, res) => {
+  const orderCollection = req.orderCollection;
+  const id = req.params.id;
+  const order = await orderCollection.findOne({ _id: new ObjectId(id) });
+  res.send(order);
+});
+
 module.exports = router;
