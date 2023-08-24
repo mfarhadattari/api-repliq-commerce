@@ -48,4 +48,33 @@ router.get("/customers", async (req, res) => {
   res.send(customers.reverse());
 });
 
+// ! --------------- CUSTOMER DETAILS ------------
+router.get("/customers/:id", async (req, res) => {
+  const customerCollection = req.customerCollection;
+  const orderCollection = req.orderCollection;
+  const cartCollection = req.cartCollection;
+  const id = req.params.id;
+  const customerInfo = await customerCollection.findOne({
+    _id: new ObjectId(id),
+  });
+  const ordersInfo = await orderCollection
+    .find(
+      { userPhone: customerInfo?.phoneNumber },
+      { projection: { _id: 1, totalAmount: 1, status: 1 } }
+    )
+    .toArray();
+
+  const cart = await cartCollection
+    .find({
+      phoneNumber: customerInfo?.phoneNumber,
+    })
+    .toArray();
+
+  res.send({
+    customerInfo,
+    cart,
+    ordersInfo,
+  });
+});
+
 module.exports = router;
