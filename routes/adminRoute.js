@@ -41,4 +41,11 @@ router.patch("/update-product/:id", async (req, res) => {
   res.send(result);
 });
 
+// ! ---------------- GET ALL CUSTOMERS ------- //
+router.get("/customers", async (req, res) => {
+  const customerCollection = req.customerCollection;
+  const customers = await customerCollection.find().toArray();
+  res.send(customers.reverse());
+});
+
 module.exports = router;
