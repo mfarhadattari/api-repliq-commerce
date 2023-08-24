@@ -4,6 +4,21 @@ const express = require("express");
 const router = express.Router();
 const {ObjectId} = require("mongodb")
 
+// ! ---------------- Admin Info -------------
+router.get("/", async (req, res) => {
+  const productCollection = req.productCollection;
+  const orderCollection = req.orderCollection;
+  const customerCollection = req.customerCollection;
+  const cartCollection = req.cartCollection;
+
+  const totalProduct = await productCollection.estimatedDocumentCount();
+  const totalOrder = await orderCollection.estimatedDocumentCount();
+  const totalCart = await cartCollection.estimatedDocumentCount();
+  const totalCustomer = await customerCollection.estimatedDocumentCount();
+
+  res.send({ totalProduct, totalCustomer, totalCart, totalOrder });
+});
+
 // ! ------------------ PRODUCTS ---------------
 router.get("/products", async (req, res) => {
   const productCollection = req.productCollection;
