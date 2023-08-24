@@ -11,11 +11,25 @@ router.get("/products", async (req, res) => {
   res.send(products.reverse());
 });
 
-// ! ------------------ Delete Product ---------------
+// ! ------------------ DELETE PRODUCT ---------------
 router.delete("/delete-product/:id", async (req, res) => {
   const productCollection = req.productCollection;
   const id = req.params.id;
   const result = await productCollection.deleteOne({ _id: new ObjectId(id) });
+  res.send(result);
+});
+
+// ! ----------- UPDATE PRODUCT ---------------
+router.patch("/update-product/:id", async (req, res) => {
+  const productCollection = req.productCollection;
+  const query = { _id: new ObjectId(req.params.id) };
+  const data = req.body;
+  const updateDoc = {
+    $set: {
+      ...data,
+    },
+  };
+  const result = await productCollection.updateOne(query, updateDoc);
   res.send(result);
 });
 
